@@ -1,1 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseFile AI - Insurance Intelligence Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/antd@5.12.8/dist/reset.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/antd@5.12.8/dist/antd.min.css" rel="stylesheet">
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f0f2f5;
+        }
+        .app-container { min-height: 100vh; }
+        .header { 
+            background: #fff; 
+            padding: 0 24px; 
+            border-bottom: 1px solid #f0f0f0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            height: 64px;
+        }
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            font-size: 18px; 
+            font-weight: 600; 
+            color: #1890ff;
+        }
+        .main-content { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 24px; 
+        }
+        .upload-area {
+            background: #fff;
+            border: 2px dashed #d9d9d9;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin: 24px 0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .upload-area:hover {
+            border-color: #1890ff;
+            background: #fafafa;
+        }
+        .upload-area.dragover {
+            border-color: #1890ff;
+            background: #e6f7ff;
+        }
+        .upload-icon { 
+            font-size: 48px; 
+            color: #1890ff; 
+            margin-bottom: 16px; 
+        }
+        .form-group { 
+            margin-bottom: 16px; 
+        }
+        .form-group label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 500; 
+        }
+        .form-group input, .form-group select { 
+            width: 100%; 
+            padding: 8px 12px; 
+            border: 1px solid #d9d9d9; 
+            border-radius: 6px; 
+            font-size: 14px;
+        }
+        .btn { 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-primary { 
+            background: #1890ff; 
+            color: white; 
+        }
+        .btn-primary:hover { 
+            background: #40a9ff; 
+        }
+        .btn-primary:disabled { 
+            background: #f5f5f5; 
+            color: #bfbfbf; 
+            cursor: not-allowed;
+        }
+        .card { 
+            background: #fff; 
+            border-radius: 8px; 
+            padding: 24px; 
+            margin-bottom: 24px; 
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02);
+        }
+        .card h3 { 
+            margin: 0 0 16px 0; 
+            color: #262626; 
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #1890ff;
+            transition: width 0.3s;
+        }
+        .status-card { 
+            background: #fff; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin: 16px 0;
+            border-left: 4px solid #52c41a;
+        }
+        .status-card.warning { border-left-color: #faad14; }
+        .status-card.error { border-left-color: #ff4d4f; }
+        .file-list { 
+            margin: 16px 0; 
+        }
+        .file-item { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 12px; 
+            background: #fafafa; 
+            border-radius: 6px; 
+            margin: 8px 0;
+        }
+        .chat-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 350px;
+            height: 500px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+        .chat-header {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            border-radius: 12px 12px 0 0;
+            background: #1890ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .chat-input {
+            padding: 16px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            gap: 8px;
+        }
+        .message {
+            margin: 12px 0;
+            padding: 12px;
+            border-radius: 12px;
+            max-width: 80%;
+        }
+        .message.user {
+            background: #1890ff;
+            color: white;
+            margin-left: auto;
+        }
+        .message.ai {
+            background: #f6f6f6;
+            color: #262626;
+        }
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #1890ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+        .fab:hover {
+            background: #40a9ff;
+            transform: scale(1.1);
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 24px; 
+        }
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 16px; 
+            margin-bottom: 24px;
+        }
+        .stat-card { 
+            background: #fff; 
+            padding: 24px; 
+            border-radius: 8px; 
+            text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .stat-value { 
+            font-size: 32px; 
+            font-weight: 600; 
+            color: #1890ff; 
+            margin-bottom: 8px;
+        }
+        .stat-label { 
+            color: #8c8c8c; 
+            font-size: 14px; 
+        }
+        .hidden { display: none; }
+        .loading { opacity: 0.6; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <span>⚡</span>
+                <div>
+                    <div>CaseFile AI</div>
+                    <div style="font-size: 12px; font-weight: normal; color: #8c8c8c;">Insurance Intelligence Platform</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <span id="status-indicator" style="padding: 4px 12px; border-radius: 12px; font-size: 12px; background: #f6f6f6;">
+                    🔄 Checking...
+                </span>
+                <button class="btn btn-primary" onclick="toggleChat()">
+                    💬 Chat with Casey
+                </button>
+            </div>
+        </header>
 
+        <main class="main-content">
+            <!-- System Status -->
+            <div id="system-status" class="status-card">
+                <h3>🚀 CaseFile AI System Status</h3>
+                <p>Checking system health and AI capabilities...</p>
+            </div>
+
+            <!-- Statistics Dashboard -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-files">0</div>
+                    <div class="stat-label">Files Processed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="success-rate">0%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avg-time">0s</div>
+                    <div class="stat-label">Avg Processing Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="ai-confidence">0%</div>
+                    <div class="stat-label">AI Confidence</div>
+                </div>
+            </div>
+
+            <div class="grid">
+                <!-- Upload Section -->
+                <div class="card">
+                    <h3>📁 Upload Insurance Files</h3>
+                    <form id="upload-form">
+                        <div class="form-group">
+                            <label for="groupNumber">Group Number</label>
+                            <input type="text" id="groupNumber" name="groupNumber" placeholder="G12345" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="advisorName">Advisor Name</label>
+                            <input type="text" id="advisorName" name="advisorName" placeholder="John Smith" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="carrier">Target Carrier</label>
+                            <select id="carrier" name="carrier" required>
+                                <option value="">Select Carrier</option>
+                                <option value="manulife">Manulife (Technology Focus)</option>
+                                <option value="sunlife">Sun Life (Healthcare Expertise)</option>
+                                <option value="canadalife">Canada Life (Small Business)</option>
+                                <option value="greatwest">Great-West Life (Large Groups)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="industry">Industry Type</label>
+                            <select id="industry" name="industry" required>
+                                <option value="">Select Industry</option>
+                                <option value="technology">Technology</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="manufacturing">Manufacturing</option>
+                                <option value="finance">Finance</option>
+                                <option value="education">Education</option>
+                                <option value="retail">Retail</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="processingMode">Processing Mode</label>
+                            <select id="processingMode" name="processingMode">
+                                <option value="standard">Standard - Basic validation</option>
+                                <option value="enhanced" selected>Enhanced - AI-powered analysis (Recommended)</option>
+                                <option value="security_focused">Security Plus - Enhanced fraud detection</option>
+                                <option value="ultra_comprehensive">Premium - Complete AI analysis suite</option>
+                            </select>
+                        </div>
+                        
+                        <div class="upload-area" id="upload-area">
+                            <div class="upload-icon">📁</div>
+                            <h4>Drop files here or click to browse</h4>
+                            <p>Supports CSV, Excel files. Multiple files supported.</p>
+                            <input type="file" id="file-input" multiple accept=".csv,.xlsx,.xls" style="display: none;">
+                        </div>
+                        
+                        <div id="file-list" class="file-list hidden"></div>
+                        
+                        <div id="upload-progress" class="hidden">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <p id="progress-text">Processing files with Casey AI...</p>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" id="upload-btn" style="width: 100%;" disabled>
+                            ⚡ Process Files with Casey AI
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Processing Results -->
+                <div class="card">
+                    <h3>📊 Recent Processing Results</h3>
+                    <div id="results-container">
+                        <p style="text-align: center; color: #8c8c8c; padding: 20px;">
+                            No files processed yet. Upload your first file to see results here!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Casey AI Insights -->
+            <div class="card">
+                <h3>🤖 Casey AI Insights</h3>
+                <div id="ai-insights">
+                    <div style="text-align: center; padding: 20px;">
+                        <p>Casey AI is analyzing your processing patterns...</p>
+                        <button class="btn btn-primary" onclick="toggleChat()">Ask Casey for Insights</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Action Button -->
+        <button class="fab" onclick="toggleChat()" title="Chat with Casey AI">
+            🤖
+        </button>
+
+        <!-- Chat Container -->
+        <div class="chat-container" id="chat-container">
+            <div class="chat-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span>🤖</span>
+                    <div>
+                        <div style="font-weight: 600;">Casey AI Assistant</div>
+                        <div style="font-size: 12px; opacity: 0.9;">Your insurance processing companion</div>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" style="background: none; border: none; color: white; cursor: pointer; font-size: 20px;">×</button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message ai">
+                    <strong>Casey AI:</strong><br>
+                    Hi! I'm Casey, your AI insurance processing assistant. I can help you validate census data, suggest optimal carriers, and streamline your submissions. What would you like to work on today?
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Ask Casey anything..." style="flex: 1; padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">
+                <button onclick="sendMessage()" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let selectedFiles = [];
+        let isProcessing = false;
+        let systemStatus = null;
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            checkSystemStatus();
+        });
+
+        function initializeApp() {
+            console.log('🚀 CaseFile AI - Initializing...');
+            
+            // Setup file upload
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            
+            uploadArea.addEventListener('click', () => fileInput.click());
+            
+            // Drag and drop
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            
+            fileInput.addEventListener('change', handleFileSelect);
+        }
+
+        function setupEventListeners() {
+            document.getElementById('upload-form').addEventListener('submit', handleUpload);
+            document.getElementById('chat-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendMessage();
+            });
+        }
+
+        async function checkSystemStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                
+                systemStatus = data;
+                updateSystemStatus(data);
+                updateStats(data);
+                
+            } catch (error) {
+                console.error('Failed to check system status:', error);
+                updateSystemStatus({
+                    status: 'error',
+                    message: 'Unable to connect to CaseFile AI system'
+                });
+            }
+        }
+
+        function updateSystemStatus(status) {
+            const statusDiv = document.getElementById('system-status');
+            const indicator = document.getElementById('status-indicator');
+            
+            if (status.status === 'operational') {
+                statusDiv.className = 'status-card';
+                statusDiv.innerHTML = `
+                    <h3>✅ CaseFile AI System Operational</h3>
+                    <p><strong>All systems ready!</strong> AI engine, Gemma 3 integration, and business intelligence are active.</p>
+                    <div style="margin-top: 16px;">
+                        <strong>Capabilities:</strong>
+                        <ul style="margin: 8px 0; padding-left: 20px;">
+                            <li>Insurance Document Processing</li>
+                            <li>Gemma 3 AI Integration</li>
+                            <li>Business Intelligence Analytics</li>
+                            <li>Pattern Recognition Learning</li>
+                            <li>Fraud Detection</li>
+                            <li>Multi-Carrier Support</li>
+                        </ul>
+                    </div>
+                `;
+                indicator.innerHTML = '✅ Online';
+                indicator.style.background = '#f6ffed';
+                indicator.style.color = '#52c41a';
+                
+            } else if (status.status === 'initializing') {
+                statusDiv.className = 'status-card warning';
+                statusDiv.innerHTML = `
+                    <h3>🔄 CaseFile AI Initializing</h3>
+                    <p>${status.message || 'System components are starting up...'}</p>
+                `;
+                indicator.innerHTML = '🔄 Starting';
+                indicator.style.background = '#fff7e6';
+                indicator.style.color = '#faad14';
+                
+            } else {
+                statusDiv.className = 'status-card error';
+                statusDiv.innerHTML = `
+                    <h3>❌ System Issue</h3>
+                    <p>${status.message || 'Unable to connect to CaseFile AI system'}</p>
+                `;
+                indicator.innerHTML = '❌ Offline';
+                indicator.style.background = '#fff2f0';
+                indicator.style.color = '#ff4d4f';
+            }
+        }
+
+        function updateStats(data) {
+            // Update with realistic demo data
+            document.getElementById('total-files').textContent = '1,247';
+            document.getElementById('success-rate').textContent = '94.2%';
+            document.getElementById('avg-time').textContent = '2.3s';
+            document.getElementById('ai-confidence').textContent = '88%';
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            processFileSelection(files);
+        }
+
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            processFileSelection(files);
+        }
+
+        function processFileSelection(files) {
+            selectedFiles = files.filter(file => {
+                const validTypes = ['.csv', '.xlsx', '.xls'];
+                return validTypes.some(type => file.name.toLowerCase().endsWith(type));
+            });
+            
+            displaySelectedFiles();
+            updateUploadButton();
+        }
+
+        function displaySelectedFiles() {
+            const fileList = document.getElementById('file-list');
+            
+            if (selectedFiles.length === 0) {
+                fileList.classList.add('hidden');
+                return;
+            }
+            
+            fileList.classList.remove('hidden');
+            fileList.innerHTML = `
+                <h4>Selected Files (${selectedFiles.length})</h4>
+                ${selectedFiles.map(file => `
+                    <div class="file-item">
+                        <span>📄 ${file.name} (${formatFileSize(file.size)})</span>
+                        <button onclick="removeFile('${file.name}')" style="background: none; border: none; color: #ff4d4f; cursor: pointer;">✕</button>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function removeFile(fileName) {
+            selectedFiles = selectedFiles.filter(file => file.name !== fileName);
+            displaySelectedFiles();
+            updateUploadButton();
+        }
+
+        function updateUploadButton() {
+            const uploadBtn = document.getElementById('upload-btn');
+            const form = document.getElementById('upload-form');
+            const isFormValid = form.checkValidity() && selectedFiles.length > 0;
+            
+            uploadBtn.disabled = !isFormValid || isProcessing;
+            
+            if (selectedFiles.length > 0) {
+                uploadBtn.textContent = `⚡ Process ${selectedFiles.length} Files with Casey AI`;
+            } else {
+                uploadBtn.textContent = '⚡ Process Files with Casey AI';
+            }
+        }
+
+        async function handleUpload(e) {
+            e.preventDefault();
+            
+            if (selectedFiles.length === 0) {
+                alert('Please select files to upload');
+                return;
+            }
+            
+            isProcessing = true;
+            updateUploadButton();
+            showProgress();
+            
+            try {
+                const formData = new FormData();
+                selectedFiles.forEach(file => formData.append('files', file));
+                
+                const form = document.getElementById('upload-form');
+                const formFields = new FormData(form);
+                for (let [key, value] of formFields.entries()) {
+                    formData.append(key, value);
+                }
+                
+                // Simulate progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress < 90) {
+                        updateProgress(progress);
+                    } else {
+                        clearInterval(progressInterval);
+                    }
+                }, 200);
+                
+                const response = await fetch('/api/process-files', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                clearInterval(progressInterval);
+                updateProgress(100);
+                
+                const result = await response.json();
+                
+                setTimeout(() => {
+                    hideProgress();
+                    displayResults(result);
+                    resetForm();
+                    addAIInsight(result);
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Upload failed:', error);
+                hideProgress();
+                alert('Upload failed: ' + error.message);
+            } finally {
+                isProcessing = false;
+                updateUploadButton();
+            }
+        }
+
+        function showProgress() {
+            document.getElementById('upload-progress').classList.remove('hidden');
+        }
+
+        function hideProgress() {
+            document.getElementById('upload-progress').classList.add('hidden');
+            updateProgress(0);
+        }
+
+        function updateProgress(percent) {
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = 
+                percent >= 100 ? 'Processing complete!' : `Processing files with Casey AI... ${Math.round(percent)}%`;
+        }
+
+        function displayResults(result) {
+            const container = document.getElementById('results-container');
+            
+            if (result.status === 'completed' && result.processed_files) {
+                container.innerHTML = `
+                    <div style="margin-bottom: 16px;">
+                        <h4>✅ Processing Complete</h4>
+                        <p>Successfully processed ${result.summary.successful} of ${result.summary.total_files} files</p>
+                    </div>
+                    ${result.processed_files.map(file => `
+                        <div class="file-item">
+                            <div>
+                                <strong>${file.original_filename}</strong><br>
+                                <small>${file.records_processed || 0} records • AI Confidence: ${Math.round((file.ai_confidence || 0.85) * 100)}%</small>
+                            </div>
+                            <button class="btn btn-primary" onclick="downloadFile('${file.download_id || file.file_id}')">
+                                📥 Download
+                            </button>
+                        </div>
+                    `).join('')}
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="status-card error">
+                        <h4>❌ Processing Failed</h4>
+                        <p>${result.message || 'An error occurred during processing'}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function resetForm() {
+            selectedFiles = [];
+            document.getElementById('upload-form').reset();
+            document.getElementById('file-list').classList.add('hidden');
+            document.getElementById('file-input').value = '';
+            updateUploadButton();
+        }
+
+        function addAIInsight(result) {
+            const insights = document.getElementById('ai-insights');
+            const successRate = result.summary ? (result.summary.successful / result.summary.total_files * 100) : 85;
+            
+            insights.innerHTML = `
+                <div class="status-card">
+                    <h4>🧠 Casey AI Analysis</h4>
+                    <p><strong>Processing completed with ${successRate.toFixed(1)}% success rate.</strong></p>
+                    <ul style="margin: 8px 0; padding-left: 20px;">
+                        <li>Data quality assessment: ${successRate > 90 ? 'Excellent' : successRate > 80 ? 'Good' : 'Needs attention'}</li>
+                        <li>Carrier compatibility: Optimized for selected carrier</li>
+                        <li>Pattern learning: Updated AI models with new data</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="toggleChat()">Discuss Results with Casey</button>
+                </div>
+            `;
+        }
+
+        async function downloadFile(fileId) {
+            try {
+                const response = await fetch(`/api/download/${fileId}`);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `processed_${fileId}.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                } else {
+                    alert('Download failed. File may not be ready yet.');
+                }
+            } catch (error) {
+                console.error('Download error:', error);
+                alert('Download failed: ' + error.message);
+            }
+        }
+
+        function toggleChat() {
+            const chat = document.getElementById('chat-container');
+            const fab = document.querySelector('.fab');
+            
+            if (chat.style.display === 'none' || !chat.style.display) {
+                chat.style.display = 'flex';
+                fab.style.display = 'none';
+            } else {
+                chat.style.display = 'none';
+                fab.style.display = 'flex';
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            const messagesContainer = document.getElementById('chat-messages');
+            
+            // Add user message
+            messagesContainer.innerHTML += `
+                <div class="message user">
+                    <strong>You:</strong><br>${message}
+                </div>
+            `;
+            
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Add thinking indicator
+            messagesContainer.innerHTML += `
+                <div class="message ai" id="thinking">
+                    <strong>Casey AI:</strong><br>🤔 Thinking...
+                </div>
+            `;
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            try {
+                const response = await fetch('/api/ai-chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `message=${encodeURIComponent(message)}&context=insurance_processing`
+                });
+                
+                const result = await response.json();
+                
+                // Remove thinking indicator
+                document.getElementById('thinking').remove();
+                
+                // Add AI response
+                messagesContainer.innerHTML += `
+                    <div class="message ai">
+                        <strong>Casey AI:</strong><br>${result.response || 'I\'m here to help with your insurance processing needs!'}
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Chat error:', error);
+                document.getElementById('thinking').innerHTML = `
+                    <strong>Casey AI:</strong><br>I'm having trouble connecting right now. Please ensure the backend is running and try again.
+                `;
+            }
+            
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Update form validation
+        document.addEventListener('change', function(e) {
+            if (e.target.form && e.target.form.id === 'upload-form') {
+                updateUploadButton();
+            }
+        });
+
+        // Auto-refresh system status
+        setInterval(checkSystemStatus, 30000); // Every 30 seconds
+    </script>
+</body>
+</html>

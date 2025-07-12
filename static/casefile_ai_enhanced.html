@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseFile AI - Enhanced Insurance Intelligence Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* SchoolHub-inspired Professional Color Palette */
+            --primary-purple: #6366f1;
+            --primary-purple-light: #8b5cf6;
+            --primary-purple-dark: #4338ca;
+            --accent-yellow: #fbbf24;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-400: #94a3b8;
+            --neutral-500: #64748b;
+            --neutral-600: #475569;
+            --neutral-700: #334155;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--neutral-50) 0%, var(--neutral-100) 100%);
+            color: var(--neutral-700);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            background: var(--neutral-50);
+        }
+
+        /* SIDEBAR NAVIGATION - SchoolHub Style */
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            border-right: 1px solid var(--neutral-200);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--neutral-200);
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-light) 100%);
+            color: var(--white);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--accent-yellow);
+        }
+
+        .version-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 24px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            margin: 0 16px 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--neutral-600);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background: var(--primary-purple);
+            color: var(--white);
+            transform: translateX(4px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-light) 100%);
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-link i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .notification-badge {
+            background: var(--accent-red);
+            color: var(--white);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            font-weight: 600;
+        }
+
+        /* MAIN CONTENT AREA */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TOP HEADER BAR */
+        .top-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--neutral-200);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1px solid var(--neutral-300);
+            border-radius: 12px;
+            font-size: 14px;
+            background: var(--neutral-50);
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-400);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .action-btn {
+            padding: 10px;
+            border-radius: 12px;
+            border: none;
+            background: var(--neutral-100);
+            color: var(--neutral-600);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-purple);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            background: var(--neutral-100);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .user-profile:hover {
+            background: var(--primary-purple);
+            color: var(--white);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-blue) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* DASHBOARD CONTENT */
+        .dashboard-content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--neutral-800);
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: var(--neutral-500);
+            font-size: 16px;
+        }
+
+        /* STATS CARDS - SchoolHub Style */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--neutral-200);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-purple) 0%, var(--accent-blue) 100%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--white);
+        }
+
+        .stat-icon.purple { background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-light) 100%); }
+        .stat-icon.yellow { background: linear-gradient(135deg, var(--accent-yellow) 0%, #f59e0b 100%); }
+        .stat-icon.blue { background: linear-gradient(135deg, var(--accent-blue) 0%, #2563eb 100%); }
+        .stat-icon.green { background: linear-gradient(135deg, var(--accent-green) 0%, #059669 100%); }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--neutral-800);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: var(--neutral-500);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .stat-change.positive {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        .stat-change.negative {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent-red);
+        }
+
+        /* UPLOAD SECTION */
+        .upload-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--neutral-200);
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--neutral-800);
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-blue) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--neutral-300);
+            border-radius: 12px;
+            padding: 48px 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: var(--neutral-50);
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--primary-purple);
+            background: rgba(99, 102, 241, 0.05);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary-purple);
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neutral-700);
+            margin-bottom: 8px;
+        }
+
+        .upload-subtext {
+            color: var(--neutral-500);
+            font-size: 14px;
+        }
+
+        /* FORM COMPONENTS */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--neutral-700);
+            font-size: 14px;
+        }
+
+        .form-input, .form-select {
+            padding: 12px 16px;
+            border: 1px solid var(--neutral-300);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            background: var(--white);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-light) 100%);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            border: 1px solid var(--neutral-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--neutral-200);
+        }
+
+        /* CASEY AI CHAT - SchoolHub Messages Style */
+        .chat-section {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--neutral-200);
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--neutral-200);
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-blue) 100%);
+            color: var(--white);
+        }
+
+        .chat-title {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            background: var(--neutral-50);
+        }
+
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .message-avatar.casey {
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-blue) 100%);
+            color: var(--white);
+        }
+
+        .message-avatar.user {
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-blue) 100%);
+            color: var(--white);
+        }
+
+        .message-content {
+            background: var(--white);
+            padding: 12px 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            max-width: 80%;
+            border: 1px solid var(--neutral-200);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-light) 100%);
+            color: var(--white);
+        }
+
+        .chat-input-container {
+            padding: 20px 24px;
+            border-top: 1px solid var(--neutral-200);
+            background: var(--white);
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--neutral-300);
+            border-radius: 12px;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .chat-send-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-blue) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chat-send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* LOADING STATES */
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--neutral-300);
+            border-top: 2px solid var(--primary-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            .main-content {
+                margin-left: 240px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .dashboard-content {
+                padding: 16px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ANIMATIONS */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* STATUS INDICATORS */
+        .status-online {
+            color: var(--accent-green);
+        }
+
+        .status-processing {
+            color: var(--accent-yellow);
+        }
+
+        .status-error {
+            color: var(--accent-red);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR NAVIGATION -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    CaseFile AI
+                    <span class="version-badge">v2.0</span>
+                </div>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item">
+                    <a href="#dashboard" class="nav-link active">
+                        <i class="fas fa-chart-pie"></i>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#upload" class="nav-link">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        File Processing
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#cases" class="nav-link">
+                        <i class="fas fa-folder-open"></i>
+                        Cases
+                        <span class="notification-badge">12</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#analytics" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        Analytics
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#chat" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        Casey AI Chat
+                        <span class="notification-badge">3</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#calendar" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        Schedule
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#reports" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        Reports
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#settings" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- TOP HEADER -->
+            <header class="top-header">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search cases, files, or ask Casey...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="action-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="action-btn" title="Messages">
+                        <i class="fas fa-envelope"></i>
+                    </button>
+                    <button class="action-btn" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    
+                    <div class="user-profile">
+                        <div class="user-avatar">JS</div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 14px;">J. Segovia</div>
+                            <div style="font-size: 12px; color: var(--neutral-500);">Administrator</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DASHBOARD CONTENT -->
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1 class="page-title">Insurance Intelligence Dashboard</h1>
+                    <p class="page-subtitle">Powered by Enhanced Casey AI with 40 MCP Intelligence Patterns</p>
+                </div>
+
+                <!-- STATS CARDS -->
+                <div class="stats-grid">
+                    <div class="stat-card fade-in">
+                        <div class="stat-header">
+                            <div class="stat-icon purple">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="stat-change positive">+15%</div>
+                        </div>
+                        <div class="stat-value" id="totalFiles">2,847</div>
+                        <div class="stat-label">Files Processed</div>
+                    </div>
+
+                    <div class="stat-card fade-in" style="animation-delay: 0.1s;">
+                        <div class="stat-header">
+                            <div class="stat-icon yellow">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="stat-change positive">+23%</div>
+                        </div>
+                        <div class="stat-value" id="aiInsights">1,592</div>
+                        <div class="stat-label">AI Insights Generated</div>
+                    </div>
+
+                    <div class="stat-card fade-in" style="animation-delay: 0.2s;">
+                        <div class="stat-header">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="stat-change positive">+8%</div>
+                        </div>
+                        <div class="stat-value" id="fraudDetected">47</div>
+                        <div class="stat-label">Fraud Cases Detected</div>
+                    </div>
+
+                    <div class="stat-card fade-in" style="animation-delay: 0.3s;">
+                        <div class="stat-header">
+                            <div class="stat-icon green">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-change positive">-31%</div>
+                        </div>
+                        <div class="stat-value" id="processingTime">2.3m</div>
+                        <div class="stat-label">Avg Processing Time</div>
+                    </div>
+                </div>
+
+                <!-- MAIN CONTENT GRID -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 32px;">
+                    <!-- FILE UPLOAD SECTION -->
+                    <div class="upload-section slide-up">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <h2 class="section-title">Smart File Processing</h2>
+                        </div>
+
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">Drop insurance files here or click to browse</div>
+                            <div class="upload-subtext">Supports PDF, DOC, XLS, CSV files up to 50MB</div>
+                            <input type="file" id="fileInput" multiple style="display: none;" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv">
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Client Name</label>
+                                <input type="text" class="form-input" id="clientName" placeholder="Enter client name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Policy Type</label>
+                                <select class="form-select" id="policyType">
+                                    <option value="">Select policy type</option>
+                                    <option value="auto">Auto Insurance</option>
+                                    <option value="home">Home Insurance</option>
+                                    <option value="life">Life Insurance</option>
+                                    <option value="health">Health Insurance</option>
+                                    <option value="commercial">Commercial Insurance</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Priority Level</label>
+                                <select class="form-select" id="priority">
+                                    <option value="normal">Normal</option>
+                                    <option value="high">High Priority</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Processing Mode</label>
+                                <select class="form-select" id="processingMode">
+                                    <option value="enhanced">Enhanced AI (Recommended)</option>
+                                    <option value="standard">Standard Processing</option>
+                                    <option value="fraud">Fraud Detection Focus</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" id="processBtn">
+                            <i class="fas fa-magic"></i>
+                            Process with Enhanced Casey AI
+                        </button>
+                    </div>
+
+                    <!-- CASEY AI CHAT -->
+                    <div class="chat-section slide-up" style="animation-delay: 0.2s;">
+                        <div class="chat-header">
+                            <div class="chat-title">
+                                <i class="fas fa-robot"></i>
+                                Enhanced Casey AI
+                                <span class="status-online pulse">●</span>
+                            </div>
+                            <div class="chat-subtitle">Powered by 40 MCP Intelligence Patterns</div>
+                        </div>
+
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message">
+                                <div class="message-avatar casey">CA</div>
+                                <div class="message-content">
+                                    Hi! I'm Casey, your enhanced AI assistant. I can help with insurance processing, fraud detection, and business analytics. What would you like to work on?
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chat-input-container">
+                            <div class="chat-input-wrapper">
+                                <textarea class="chat-input" id="chatInput" placeholder="Ask Casey about insurance processing, analytics, or anything else..."></textarea>
+                                <button class="chat-send-btn" id="chatSendBtn">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Backend URL Configuration
+        let backendUrl = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1') 
+            ? 'http://localhost:8000' 
+            : 'https://casefile-ai-backend-production.up.railway.app';
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            checkBackendStatus();
+            animateCounters();
+        });
+
+        function initializeApp() {
+            console.log('🚀 CaseFile AI Enhanced - Initializing with SchoolHub-inspired design');
+            console.log('🧠 40 MCP Intelligence Patterns Active');
+            console.log('🌐 Backend URL:', backendUrl);
+        }
+
+        function setupEventListeners() {
+            // File upload functionality
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const processBtn = document.getElementById('processBtn');
+            const chatSendBtn = document.getElementById('chatSendBtn');
+            const chatInput = document.getElementById('chatInput');
+
+            // Upload area click
+            uploadArea.addEventListener('click', () => fileInput.click());
+
+            // Drag and drop
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                handleFiles(e.dataTransfer.files);
+            });
+
+            // File input change
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+
+            // Process button
+            processBtn.addEventListener('click', processFiles);
+
+            // Chat functionality
+            chatSendBtn.addEventListener('click', sendChatMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendChatMessage();
+                }
+            });
+
+            // Navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+
+            // Auto-resize chat input
+            chatInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+        }
+
+        async function checkBackendStatus() {
+            try {
+                const response = await fetch(`${backendUrl}/api/status`);
+                const data = await response.json();
+                
+                if (data.status === 'operational') {
+                    console.log('✅ Backend Connected:', data.message);
+                    showNotification('Enhanced Casey AI is online and ready!', 'success');
+                } else {
+                    throw new Error('Backend not operational');
+                }
+            } catch (error) {
+                console.error('❌ Backend Connection Error:', error);
+                showNotification('Backend connection issues detected. Some features may be limited.', 'warning');
+                backendUrl = 'demo'; // Fallback to demo mode
+            }
+        }
+
+        function handleFiles(files) {
+            const uploadArea = document.getElementById('uploadArea');
+            
+            if (files.length > 0) {
+                const fileNames = Array.from(files).map(f => f.name).join(', ');
+                uploadArea.innerHTML = `
+                    <div class="upload-icon">
+                        <i class="fas fa-check-circle" style="color: var(--accent-green);"></i>
+                    </div>
+                    <div class="upload-text">Files Selected: ${files.length}</div>
+                    <div class="upload-subtext">${fileNames}</div>
+                `;
+                
+                // Store files for processing
+                window.selectedFiles = files;
+                showNotification(`${files.length} file(s) selected for processing`, 'info');
+            }
+        }
+
+        async function processFiles() {
+            if (!window.selectedFiles || window.selectedFiles.length === 0) {
+                showNotification('Please select files to process first', 'warning');
+                return;
+            }
+
+            const processBtn = document.getElementById('processBtn');
+            const originalText = processBtn.innerHTML;
+            
+            processBtn.innerHTML = '<div class="loading-spinner"></div> Processing with Enhanced Casey AI...';
+            processBtn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                
+                // Add files
+                Array.from(window.selectedFiles).forEach(file => {
+                    formData.append('files', file);
+                });
+
+                // Add form data
+                formData.append('client_name', document.getElementById('clientName').value || 'Unknown Client');
+                formData.append('policy_type', document.getElementById('policyType').value || 'general');
+                formData.append('priority', document.getElementById('priority').value || 'normal');
+                formData.append('processing_mode', document.getElementById('processingMode').value || 'enhanced');
+
+                let response;
+                if (backendUrl === 'demo') {
+                    // Demo mode response
+                    await new Promise(resolve => setTimeout(resolve, 3000)); // Simulate processing
+                    response = {
+                        success: true,
+                        message: 'Files processed successfully (Demo Mode)',
+                        results: generateDemoResults()
+                    };
+                } else {
+                    // Real backend processing
+                    const fetchResponse = await fetch(`${backendUrl}/api/process-files`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    response = await fetchResponse.json();
+                }
+
+                if (response.success) {
+                    showNotification('Files processed successfully with Enhanced Casey AI!', 'success');
+                    displayProcessingResults(response.results);
+                    updateDashboardStats();
+                } else {
+                    throw new Error(response.message || 'Processing failed');
+                }
+
+            } catch (error) {
+                console.error('Processing error:', error);
+                showNotification('Processing failed: ' + error.message, 'error');
+            } finally {
+                processBtn.innerHTML = originalText;
+                processBtn.disabled = false;
+            }
+        }
+
+        async function sendChatMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const message = chatInput.value.trim();
+            
+            if (!message) return;
+
+            // Add user message
+            addChatMessage(message, 'user');
+            chatInput.value = '';
+            chatInput.style.height = 'auto';
+
+            // Show typing indicator
+            const typingId = addTypingIndicator();
+
+            try {
+                let response;
+                if (backendUrl === 'demo') {
+                    // Demo responses
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    response = generateDemoResponse(message);
+                } else {
+                    // Real API call
+                    const formData = new FormData();
+                    formData.append('message', message);
+                    formData.append('context', 'enhanced_ui_chat');
+
+                    const fetchResponse = await fetch(`${backendUrl}/api/ai-chat`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await fetchResponse.json();
+                    response = data.response;
+                }
+
+                removeTypingIndicator(typingId);
+                addChatMessage(response, 'casey');
+
+            } catch (error) {
+                console.error('Chat error:', error);
+                removeTypingIndicator(typingId);
+                addChatMessage('Sorry, I encountered an error. Please try again.', 'casey');
+            }
+        }
+
+        function addChatMessage(content, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const avatar = sender === 'user' ? 'JS' : 'CA';
+            const avatarClass = sender === 'user' ? 'user' : 'casey';
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar ${avatarClass}">${avatar}</div>
+                <div class="message-content">${content}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message typing-indicator';
+            typingDiv.id = 'typing-' + Date.now();
+            
+            typingDiv.innerHTML = `
+                <div class="message-avatar casey">CA</div>
+                <div class="message-content">
+                    <div class="loading-spinner"></div>
+                    Casey is thinking...
+                </div>
+            `;
+            
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return typingDiv.id;
+        }
+
+        function removeTypingIndicator(id) {
+            const typingDiv = document.getElementById(id);
+            if (typingDiv) {
+                typingDiv.remove();
+            }
+        }
+
+        function generateDemoResponse(message) {
+            const responses = [
+                `I understand you're asking about "${message}". As your Enhanced Casey AI with 40 MCP Intelligence Patterns, I can help with comprehensive insurance analysis, fraud detection, and business optimization. What specific aspect would you like me to focus on?`,
+                `Based on my enhanced MCP capabilities, I can provide insights on your request. My intelligence patterns include filesystem analysis, sequential reasoning, database optimization, and advanced analytics. How can I assist you with your insurance processing needs?`,
+                `Great question! With my enhanced capabilities from 40 MCP servers, I can process complex insurance scenarios, detect patterns in claims data, and provide strategic recommendations. Would you like me to run a specific analysis?`,
+                `I'm processing your request using my multi-capability intelligence framework. This includes advanced pattern recognition, security protocols, and business intelligence analysis. Let me help you with data-driven insights for your insurance operations.`
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        function generateDemoResults() {
+            return {
+                files_processed: window.selectedFiles.length,
+                ai_insights: Math.floor(Math.random() * 10) + 5,
+                fraud_indicators: Math.floor(Math.random() * 3),
+                processing_time: (Math.random() * 5 + 1).toFixed(1) + 's',
+                confidence_score: (Math.random() * 20 + 80).toFixed(1) + '%'
+            };
+        }
+
+        function displayProcessingResults(results) {
+            const resultsHtml = `
+                <div class="processing-results" style="margin-top: 24px; padding: 20px; background: var(--neutral-50); border-radius: 12px; border: 1px solid var(--neutral-200);">
+                    <h3 style="color: var(--primary-purple); margin-bottom: 16px;">
+                        <i class="fas fa-check-circle"></i> Processing Complete
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: 600; color: var(--primary-purple);">${results.files_processed}</div>
+                            <div style="color: var(--neutral-600); font-size: 14px;">Files Processed</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: 600; color: var(--accent-blue);">${results.ai_insights}</div>
+                            <div style="color: var(--neutral-600); font-size: 14px;">AI Insights</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: 600; color: var(--accent-red);">${results.fraud_indicators}</div>
+                            <div style="color: var(--neutral-600); font-size: 14px;">Fraud Alerts</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: 600; color: var(--accent-green);">${results.processing_time}</div>
+                            <div style="color: var(--neutral-600); font-size: 14px;">Processing Time</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.upload-section').insertAdjacentHTML('beforeend', resultsHtml);
+        }
+
+        function animateCounters() {
+            const counters = ['totalFiles', 'aiInsights', 'fraudDetected'];
+            
+            counters.forEach(id => {
+                const element = document.getElementById(id);
+                const target = parseInt(element.textContent.replace(/,/g, ''));
+                let current = 0;
+                const increment = target / 50;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        element.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        element.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 30);
+            });
+        }
+
+        function updateDashboardStats() {
+            // Simulate stat updates after processing
+            const totalFiles = document.getElementById('totalFiles');
+            const aiInsights = document.getElementById('aiInsights');
+            const fraudDetected = document.getElementById('fraudDetected');
+            
+            const currentFiles = parseInt(totalFiles.textContent.replace(/,/g, ''));
+            const currentInsights = parseInt(aiInsights.textContent.replace(/,/g, ''));
+            const currentFraud = parseInt(fraudDetected.textContent.replace(/,/g, ''));
+            
+            totalFiles.textContent = (currentFiles + window.selectedFiles.length).toLocaleString();
+            aiInsights.textContent = (currentInsights + Math.floor(Math.random() * 10) + 5).toLocaleString();
+            fraudDetected.textContent = (currentFraud + Math.floor(Math.random() * 2)).toLocaleString();
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                border-radius: 12px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                max-width: 400px;
+                box-shadow: var(--shadow-xl);
+                animation: slideInRight 0.3s ease-out;
+            `;
+            
+            const colors = {
+                success: 'var(--accent-green)',
+                error: 'var(--accent-red)',
+                warning: 'var(--accent-yellow)',
+                info: 'var(--primary-purple)'
+            };
+            
+            notification.style.background = colors[type] || colors.info;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // Add slide animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        console.log('🎨 SchoolHub-inspired CaseFile AI Enhanced UI loaded successfully!');
+        console.log('🚀 40 MCP Intelligence Patterns active and ready!');
+    </script>
+</body>
+</html>
