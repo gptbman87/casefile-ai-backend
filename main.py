@@ -370,9 +370,9 @@ async def login(
     
     # PRODUCTION USER DATABASE (replace with real database)
     users_db = {
-        "jose@solodev.ca": {
+        "admin@company.com": {
             "password_hash": hashlib.sha256("CaseFileAI2024!".encode()).hexdigest(),
-            "name": "Jose Segovia",
+            "name": "Administrator",
             "role": "Administrator",
             "approved": True
         }
@@ -418,12 +418,12 @@ async def signup(
     
     # PRODUCTION USER DATABASE (replace with real database)
     users_db = {
-        "jose@solodev.ca": {
+        "admin@company.com": {
             "password_hash": hashlib.sha256("CaseFileAI2024!".encode()).hexdigest(),
-            "name": "Jose Segovia",
+            "name": "Administrator",
             "role": "Administrator",
             "approved": True,
-            "company": "SoloDev"
+            "company": "Company"
         }
     }
     
