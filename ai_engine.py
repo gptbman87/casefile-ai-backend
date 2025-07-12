@@ -38,18 +38,22 @@ class GemmaAIEngine:
         self.is_initialized = False
         self.simulation_mode = not (TORCH_AVAILABLE and GEMMA_AVAILABLE)
         
-        # MCP Intelligence Integration (Internal Enhancement)
-        self.mcp_intelligence = {
-            'filesystem_knowledge': True,    # File operation expertise
-            'memory_patterns': True,         # Pattern recognition
-            'sequential_reasoning': True,    # Enhanced logical thinking  
-            'database_optimization': True,   # Data query intelligence
-            'analytics_insights': True,      # Business intelligence
-            'web_research': True,           # Information gathering
-            'version_awareness': True,       # Code/data versioning
-            'deployment_knowledge': True,    # Infrastructure understanding
-            # MCP Servers Integration (Internal Intelligence Patterns)
-            self.mcp_servers = self.mcp_intelligence  # Map to intelligence patterns
+       # MCP Intelligence Integration (Internal Enhancement)
+self.mcp_intelligence = {
+    'filesystem_knowledge': True,    # File operation expertise
+    'memory_patterns': True,         # Pattern recognition
+    'sequential_reasoning': True,    # Enhanced logical thinking  
+    'database_optimization': True,   # Data query intelligence
+    'analytics_insights': True,      # Business intelligence
+    'web_research': True,           # Information gathering
+    'version_awareness': True,       # Code/data versioning
+    'deployment_knowledge': True,    # Infrastructure understanding
+    'performance_optimization': True, # Speed/efficiency focus
+    'security_awareness': True      # Protection protocols
+}
+
+# MCP Servers Integration (Internal Intelligence Patterns)  
+self.mcp_servers = self.mcp_intelligence  # Map to intelligence patterns
             
         }
         
