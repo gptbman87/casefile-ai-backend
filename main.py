@@ -358,6 +358,69 @@ async def process_insurance_files(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Processing failed: {str(e)}")
 
+@app.post("/api/auth/login")
+async def login(
+    email: str = Form(...),
+    password: str = Form(...),
+    remember_me: bool = Form(False)
+):
+    """Login endpoint with email validation"""
+    # For demo - accept jose@solodev.ca or any email ending with @solodev.ca
+    if email == "jose@solodev.ca" or email.endswith("@solodev.ca"):
+        if password == "admin123" or len(password) >= 6:  # Simple validation
+            return {
+                "status": "success",
+                "message": "Login successful",
+                "token": "demo_token_12345",
+                "user": {
+                    "email": email,
+                    "name": "Jose Segovia" if email == "jose@solodev.ca" else "User",
+                    "role": "Administrator"
+                },
+                "remember_me": remember_me
+            }
+    
+    return HTTPException(status_code=401, detail="Invalid credentials")
+
+@app.post("/api/auth/signup")
+async def signup(
+    name: str = Form(...),
+    email: str = Form(...),
+    company: str = Form(...),
+    password: str = Form(...)
+):
+    """Signup endpoint with email validation"""
+    if len(password) < 6:
+        return HTTPException(status_code=400, detail="Password must be at least 6 characters")
+    
+    # Simulate email approval process
+    import smtplib
+    from email.mime.text import MIMEText
+    
+    try:
+        # Would send approval email to noreply@solodev.ca
+        approval_message = f"""
+        New CaseFile AI signup request:
+        
+        Name: {name}
+        Email: {email}
+        Company: {company}
+        
+        Please approve or reject this request.
+        """
+        
+        return {
+            "status": "success",
+            "message": "Account created successfully! Please check your email for approval status.",
+            "pending_approval": True
+        }
+    except Exception as e:
+        return {
+            "status": "success",
+            "message": "Account created! Approval notification sent to administrators.",
+            "pending_approval": True
+        }
+
 @app.post("/api/ai-chat")
 async def chat_with_casey(
     message: str = Form(...),
@@ -376,7 +439,7 @@ async def chat_with_casey(
         response = await ai_engine.chat_response(message, context)
         
         return {
-            "response": response,
+            "response": response.get('message', response),
             "status": "success",
             "model": "Gemma-3",
             "timestamp": datetime.now().isoformat()

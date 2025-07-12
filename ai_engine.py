@@ -266,6 +266,11 @@ class GemmaAIEngine:
             'cognitive_insights': 'MODAETOS Phase 3 cognitive patterns applied successfully'
         }
 
+    async def chat_response(self, message: str, context: str = None) -> str:
+        """Generate chat response - simplified for compatibility"""
+        result = await self.chat_with_ai(message, context)
+        return result.get('message', 'Hello! I\'m Casey, ready to help with your insurance needs!')
+    
     async def chat_with_ai(self, message: str, context: List[Dict] = None) -> Dict:
         """Enhanced AI chat with MCP intelligence"""
         try:
