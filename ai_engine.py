@@ -48,10 +48,12 @@ class GemmaAIEngine:
             'web_research': True,           # Information gathering
             'version_awareness': True,       # Code/data versioning
             'deployment_knowledge': True,    # Infrastructure understanding
-            # MCP Servers Integration (Internal Intelligence Patterns)
-            self.mcp_servers = self.mcp_intelligence  # Map to intelligence patterns
-            
+            'performance_optimization': True, # Speed/efficiency focus
+            'security_awareness': True      # Protection protocols
         }
+
+        # MCP Servers Integration (Internal Intelligence Patterns)  
+        self.mcp_servers = self.mcp_intelligence  # Map to intelligence patterns
         
         print(f"🚀 Enhanced Gemma AI Engine with 40 MCP Servers")
         print(f"🤖 Core AI - Device: {self.device}")
