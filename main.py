@@ -364,23 +364,47 @@ async def login(
     password: str = Form(...),
     remember_me: bool = Form(False)
 ):
-    """Login endpoint with email validation"""
-    # For demo - accept jose@solodev.ca or any email ending with @solodev.ca
-    if email == "jose@solodev.ca" or email.endswith("@solodev.ca"):
-        if password == "admin123" or len(password) >= 6:  # Simple validation
-            return {
-                "status": "success",
-                "message": "Login successful",
-                "token": "demo_token_12345",
-                "user": {
-                    "email": email,
-                    "name": "Jose Segovia" if email == "jose@solodev.ca" else "User",
-                    "role": "Administrator"
-                },
-                "remember_me": remember_me
-            }
+    """PRODUCTION Login endpoint with secure password validation"""
+    import hashlib
+    import secrets
     
-    return HTTPException(status_code=401, detail="Invalid credentials")
+    # PRODUCTION USER DATABASE (replace with real database)
+    users_db = {
+        "jose@solodev.ca": {
+            "password_hash": hashlib.sha256("CaseFileAI2024!".encode()).hexdigest(),
+            "name": "Jose Segovia",
+            "role": "Administrator",
+            "approved": True
+        }
+    }
+    
+    # Validate user exists and is approved
+    if email not in users_db:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    user = users_db[email]
+    if not user.get("approved", False):
+        raise HTTPException(status_code=403, detail="Account not approved yet")
+    
+    # Validate password
+    password_hash = hashlib.sha256(password.encode()).hexdigest()
+    if password_hash != user["password_hash"]:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    # Generate secure token
+    token = secrets.token_urlsafe(32)
+    
+    return {
+        "status": "success",
+        "message": "Login successful",
+        "token": token,
+        "user": {
+            "email": email,
+            "name": user["name"],
+            "role": user["role"]
+        },
+        "remember_me": remember_me
+    }
 
 @app.post("/api/auth/signup")
 async def signup(
