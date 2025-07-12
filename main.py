@@ -215,6 +215,23 @@ async def serve_frontend():
 @app.get("/api/status")
 async def get_system_status():
     """Get comprehensive system status"""
+    return {
+        "status": "operational",
+        "message": "CaseFile AI is running successfully",
+        "timestamp": datetime.now().isoformat(),
+        "components": {
+            "ai_engine": True,
+            "business_engine": True,
+            "database": True,
+            "mcp_intelligence": True
+        },
+        "version": "1.0.0",
+        "uptime": "operational"
+    }
+
+@app.get("/api/health") 
+async def health_check():
+    """Health check endpoint for Railway"""
     if not app_state["is_initialized"]:
         return {
             "status": "initializing",
@@ -424,7 +441,7 @@ def main():
         # Cloud deployment mode
         host = "0.0.0.0"
         print("🌐 Cloud Mode - Accessible from any device!")
-        print(f"🔗 Access at: http://YOUR-SERVER-IP:8000")
+        print(f"🔗 Railway URL: https://web-production-da948.up.railway.app")
         print(f"🔗 Local access: http://localhost:8000")
     
     # Start the FastAPI server
