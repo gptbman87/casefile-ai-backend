@@ -55,7 +55,7 @@ self.mcp_intelligence = {
 # MCP Servers Integration (Internal Intelligence Patterns)  
 self.mcp_servers = self.mcp_intelligence  # Map to intelligence patterns
             
-        }
+        
         
         print(f"🚀 Enhanced Gemma AI Engine with 40 MCP Servers")
         print(f"🤖 Core AI - Device: {self.device}")
